@@ -52,16 +52,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden font-sans">
-      {/* IMMERSIVE BACKGROUND */}
+    <main className="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden font-sans">
+      {/* MINIMALIST NEURAL BACKGROUND */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/bg-login.png" 
-          alt="Atmospheric Background" 
-          className="w-full h-full object-cover opacity-60 scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(34,211,238,0.05)_0%,transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(139,92,246,0.05)_0%,transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,#050505_100%)]"></div>
       </div>
 
       {/* FLOATING PARTICLES */}
