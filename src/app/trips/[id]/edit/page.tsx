@@ -74,9 +74,20 @@ export default function ItineraryBuilder() {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
-  
-  // Journal State
   const [showJournal, setShowJournal] = useState(false);
+  const [showAddActivity, setShowAddActivity] = useState(false);
+  const [targetStopId, setTargetStopId] = useState<string | null>(null);
+  
+  // New Activity Form State
+  const [newActivity, setNewActivity] = useState({
+    name: "",
+    timeStart: "10:00",
+    duration: 60,
+    cost: 0,
+    category: "Sightseeing",
+    description: ""
+  });
+  
   const [notes, setNotes] = useState<TripNote[]>([]);
   const [newNoteContent, setNewNoteContent] = useState("");
   const [noteCategory, setNoteCategory] = useState("General");
@@ -277,6 +288,27 @@ export default function ItineraryBuilder() {
     printWindow.document.close();
   };
 
+  const handleAddActivity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!trip || !targetStopId) return;
+
+    try {
+      await addActivityToStop(tripId as string, targetStopId, newActivity);
+      setShowAddActivity(false);
+      setNewActivity({
+        name: "",
+        timeStart: "10:00",
+        duration: 60,
+        cost: 0,
+        category: "Sightseeing",
+        description: ""
+      });
+      await fetchItinerary();
+    } catch (err) {
+      console.error("Error adding activity:", err);
+    }
+  };
+
   const handleAddStop = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -463,7 +495,13 @@ export default function ItineraryBuilder() {
                           </div>
                         ))}
                         
-                        <button className="w-full py-4 border-2 border-dashed border-white/5 rounded-2xl text-sm font-bold text-gray-500 hover:border-[var(--primary)]/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 transition-all flex items-center justify-center gap-3 group/add">
+                        <button 
+                          onClick={() => {
+                            setTargetStopId(stop.id);
+                            setShowAddActivity(true);
+                          }}
+                          className="w-full py-4 border-2 border-dashed border-white/5 rounded-2xl text-sm font-bold text-gray-500 hover:border-[var(--primary)]/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 transition-all flex items-center justify-center gap-3 group/add"
+                        >
                           <Plus size={18} className="group-hover/add:rotate-90 transition-transform" />
                           <span>ADD ACTIVITY TO DAY {index + 1}</span>
                         </button>
@@ -709,6 +747,103 @@ export default function ItineraryBuilder() {
             </motion.div>
           </div>
         )}
+
+        {/* Add Activity Modal */}
+        {showAddActivity && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-fade-in">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="glass max-w-xl w-full p-8 border-[var(--primary)]/30"
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold flex items-center gap-3">
+                  <Plus className="text-[var(--primary)]" />
+                  Add New Activity
+                </h2>
+                <button onClick={() => setShowAddActivity(false)} className="p-2 hover:bg-white/5 rounded-full">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <form onSubmit={handleAddActivity} className="space-y-6">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Activity Name</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Visit Eiffel Tower" 
+                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                    value={newActivity.name}
+                    onChange={(e) => setNewActivity({...newActivity, name: e.target.value})}
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Start Time</label>
+                    <input 
+                      type="time" 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                      value={newActivity.timeStart}
+                      onChange={(e) => setNewActivity({...newActivity, timeStart: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Category</label>
+                    <select 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                      value={newActivity.category}
+                      onChange={(e) => setNewActivity({...newActivity, category: e.target.value})}
+                    >
+                      <option className="bg-black" value="Sightseeing">Sightseeing</option>
+                      <option className="bg-black" value="Food">Food & Drink</option>
+                      <option className="bg-black" value="Shopping">Shopping</option>
+                      <option className="bg-black" value="Adventure">Adventure</option>
+                      <option className="bg-black" value="Relaxation">Relaxation</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Duration (mins)</label>
+                    <input 
+                      type="number" 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                      value={newActivity.duration}
+                      onChange={(e) => setNewActivity({...newActivity, duration: parseInt(e.target.value)})}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Est. Cost ($)</label>
+                    <input 
+                      type="number" 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                      value={newActivity.cost}
+                      onChange={(e) => setNewActivity({...newActivity, cost: parseInt(e.target.value)})}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Brief Description</label>
+                  <textarea 
+                    placeholder="Describe what you'll do..." 
+                    className="w-full h-24 bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)] resize-none"
+                    value={newActivity.description}
+                    onChange={(e) => setNewActivity({...newActivity, description: e.target.value})}
+                  ></textarea>
+                </div>
+
+                <button type="submit" className="btn-primary w-full justify-center py-4 text-lg">
+                  Confirm Activity
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+
         {/* Trip Journal Modal */}
         {showJournal && (
           <div className="fixed inset-0 z-[100] flex justify-end bg-black/80 backdrop-blur-md animate-fade-in">
