@@ -19,7 +19,8 @@ import {
   Zap,
   Lock,
   Mail,
-  Globe
+  Globe,
+  DollarSign
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -83,6 +84,7 @@ export default function Dashboard() {
   const [newTripName, setNewTripName] = useState("");
   const [newTripStart, setNewTripStart] = useState("");
   const [newTripEnd, setNewTripEnd] = useState("");
+  const [newTripBudget, setNewTripBudget] = useState<string>("");
   const [isCreating, setIsCreating] = useState(false);
   
   // Robust date formatting (YYYY-MM-DD)
@@ -136,7 +138,8 @@ export default function Dashboard() {
         description: "Plan your next adventure...",
         startDate: start,
         endDate: end,
-        isPublic: false
+        isPublic: false,
+        budget: newTripBudget ? parseFloat(newTripBudget) : 0
       });
       setShowCreateModal(false);
       router.push(`/trips/${tripId}/edit`);
@@ -226,6 +229,19 @@ export default function Dashboard() {
                     min={newTripStart || formatDate(new Date())}
                     onChange={(e) => setNewTripEnd(e.target.value)}
                     required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-widest">Maximum Budget ($)</label>
+                <div className="relative">
+                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input 
+                    type="number" 
+                    placeholder="e.g. 2500" 
+                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 outline-none focus:border-[var(--primary)] transition-all"
+                    value={newTripBudget}
+                    onChange={(e) => setNewTripBudget(e.target.value)}
                   />
                 </div>
               </div>
