@@ -190,7 +190,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-14 text-center pt-10 border-t border-white/5">
+            <div className="mt-14 flex flex-col gap-6 items-center pt-10 border-t border-white/5">
               <button
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-700 hover:text-white transition-all"
@@ -201,6 +201,13 @@ export default function LoginPage() {
                   <>BACK TO LOGIN</>
                 )}
               </button>
+              
+              <Link href="/admin-login" className="group">
+                <div className="flex items-center gap-3 py-3 px-6 bg-white/[0.02] border border-white/5 rounded-xl hover:border-red-500/30 transition-all">
+                  <ShieldCheck size={14} className="text-gray-800 group-hover:text-red-500 transition-colors" />
+                  <span className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-800 group-hover:text-white">Administrative Portal</span>
+                </div>
+              </Link>
             </div>
           </div>
         </motion.div>

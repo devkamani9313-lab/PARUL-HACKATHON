@@ -8,18 +8,17 @@ import {
   MapPin, 
   Calendar, 
   TrendingUp, 
-  Search, 
   Settings, 
   LogOut,
   ChevronRight,
   Compass,
   Trash2,
   User as UserIcon,
-  ShieldCheck,
   Zap,
   Lock,
   Mail,
-  Globe,
+  ShieldCheck,
+  Search,
   DollarSign
 } from "lucide-react";
 import Link from "next/link";
