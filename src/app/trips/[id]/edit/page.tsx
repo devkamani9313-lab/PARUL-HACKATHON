@@ -698,11 +698,11 @@ export default function ItineraryBuilder() {
     
     {/* Activity Detail Modal */}
     {selectedActivity && (
-      <div className="fixed inset-0 z-[120] flex items-start justify-center p-6 bg-black/90 backdrop-blur-xl overflow-y-auto py-12">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 bg-black/90 backdrop-blur-xl">
         <motion.div 
-          initial={{ y: 50, opacity: 0 }}
+          initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="glass max-w-2xl w-full overflow-hidden relative border-[var(--primary)]/30 my-auto"
+          className="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border-[var(--primary)]/30"
         >
           <button 
             onClick={() => setSelectedActivity(null)}
@@ -765,11 +765,11 @@ export default function ItineraryBuilder() {
 
     {/* Add Activity Modal */}
     {showAddActivity && (
-      <div className="fixed inset-0 z-[120] flex items-start justify-center p-6 bg-black/90 backdrop-blur-xl overflow-y-auto py-12">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 bg-black/90 backdrop-blur-xl">
         <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="glass max-w-xl w-full p-8 border-[var(--primary)]/30 my-auto"
+          className="glass max-w-xl w-full max-h-[90vh] overflow-y-auto p-8 border-[var(--primary)]/30"
         >
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold flex items-center gap-3">
@@ -861,11 +861,11 @@ export default function ItineraryBuilder() {
 
     {/* Trip Journal Modal */}
     {showJournal && (
-      <div className="fixed inset-0 z-[120] flex justify-end bg-black/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-[9999] flex justify-end bg-black/80 backdrop-blur-md">
         <motion.div 
           initial={{ x: 400 }}
           animate={{ x: 0 }}
-          className="glass w-full max-w-md h-screen flex flex-col shadow-2xl border-l border-white/10"
+          className="glass w-full max-w-md h-full flex flex-col shadow-2xl border-l border-white/10"
         >
           <div className="p-8 border-b border-white/10 flex items-center justify-between">
             <div>
