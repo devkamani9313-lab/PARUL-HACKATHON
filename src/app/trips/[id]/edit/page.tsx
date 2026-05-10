@@ -96,8 +96,50 @@ export default function ItineraryBuilder() {
     if (tripId) fetchNotes();
   }, [tripId]);
 
+  const [isCitySearchOpen, setIsCitySearchOpen] = useState(false);
+  const [citySearchQuery, setCitySearchQuery] = useState("");
+  const [citySearchResults, setCitySearchResults] = useState<any[]>([]);
+
+  // Mock City Database
+  const CITY_DB = [
+    { name: "Tokyo", country: "Japan", costIndex: 4, popularity: 98, image: "https://images.unsplash.com/photo-1540959733332-e94e270b4d82?auto=format&fit=crop&q=80&w=400" },
+    { name: "Paris", country: "France", costIndex: 5, popularity: 99, image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=400" },
+    { name: "New York", country: "USA", costIndex: 5, popularity: 97, image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=400" },
+    { name: "Bali", country: "Indonesia", costIndex: 2, popularity: 95, image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=400" },
+    { name: "Rome", country: "Italy", costIndex: 3, popularity: 96, image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=400" },
+    { name: "Dubai", country: "UAE", costIndex: 5, popularity: 94, image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" },
+    { name: "London", country: "UK", costIndex: 5, popularity: 98, image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=400" },
+    { name: "Bangkok", country: "Thailand", costIndex: 2, popularity: 97, image: "https://images.unsplash.com/photo-1508009603885-50cf7c579367?auto=format&fit=crop&q=80&w=400" },
+    { name: "Barcelona", country: "Spain", costIndex: 3, popularity: 95, image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=400" },
+    { name: "Kyoto", country: "Japan", costIndex: 3, popularity: 92, image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=400" }
+  ];
+
   useEffect(() => {
-    if (showJournal || showAddActivity || selectedActivity) {
+    if (citySearchQuery.trim().length > 1) {
+      const filtered = CITY_DB.filter(c => 
+        c.name.toLowerCase().includes(citySearchQuery.toLowerCase()) ||
+        c.country.toLowerCase().includes(citySearchQuery.toLowerCase())
+      );
+      setCitySearchResults(filtered);
+    } else {
+      setCitySearchResults([]);
+    }
+  }, [citySearchQuery]);
+
+  const handleQuickAddCity = (city: any) => {
+    setNewStopCity(`${city.name}, ${city.country}`);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    setNewStopArrival(today.toISOString().split('T')[0]);
+    setNewStopDeparture(tomorrow.toISOString().split('T')[0]);
+    setIsCitySearchOpen(false);
+    setShowAddStop(true);
+    setCitySearchQuery("");
+  };
+
+  useEffect(() => {
+    if (showJournal || showAddActivity || selectedActivity || isCitySearchOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -105,7 +147,7 @@ export default function ItineraryBuilder() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [showJournal, showAddActivity, selectedActivity]);
+  }, [showJournal, showAddActivity, selectedActivity, isCitySearchOpen]);
 
   const fetchNotes = async () => {
     try {
@@ -379,6 +421,30 @@ export default function ItineraryBuilder() {
           </button>
         </div>
       </header>
+
+      {/* City Search Bar (Floating) */}
+      <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-40">
+        <div className="glass p-2 rounded-[2rem] flex items-center gap-4 border-white/10 shadow-2xl">
+          <div className="flex-1 flex items-center gap-3 pl-6">
+            <MapPin className="text-[var(--primary)]" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search for a city to add (e.g. Tokyo, Paris...)" 
+              className="bg-transparent border-none outline-none w-full text-lg py-4"
+              value={citySearchQuery}
+              onChange={(e) => {
+                setCitySearchQuery(e.target.value);
+                if (!isCitySearchOpen) setIsCitySearchOpen(true);
+              }}
+              onFocus={() => setIsCitySearchOpen(true)}
+            />
+          </div>
+          <button className="bg-[var(--primary)] text-black font-bold px-8 py-4 rounded-[1.5rem] hover:scale-105 transition-transform flex items-center gap-2">
+            <TrendingUp size={18} />
+            Explore
+          </button>
+        </div>
+      </div>
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Trip Banner */}
@@ -849,6 +915,86 @@ export default function ItineraryBuilder() {
               Confirm Activity
             </button>
           </form>
+        </div>
+      </div>
+    )}
+
+    {/* City Search Modal/Overlay */}
+    {isCitySearchOpen && (
+      <div className="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-2xl p-6 md:p-12 overflow-y-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-4xl font-black mb-2">Explore Destinations</h2>
+              <p className="text-gray-400">Discover top cities, cost indices, and popularity scores</p>
+            </div>
+            <button 
+              onClick={() => setIsCitySearchOpen(false)}
+              className="p-4 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all"
+            >
+              <X size={32} />
+            </button>
+          </div>
+
+          {citySearchResults.length === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {CITY_DB.map((city, i) => (
+                <div key={i} className="glass-card !p-0 overflow-hidden group/city cursor-pointer" onClick={() => handleQuickAddCity(city)}>
+                  <div className="h-48 relative">
+                    <img src={city.image} className="w-full h-full object-cover group-hover/city:scale-110 transition-transform duration-500" alt={city.name} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div className="absolute bottom-4 left-6">
+                      <p className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest">{city.country}</p>
+                      <h3 className="text-2xl font-bold">{city.name}</h3>
+                    </div>
+                  </div>
+                  <div className="p-6 flex justify-between items-center bg-white/[0.02]">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-gray-500 uppercase font-black">Cost Index</span>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <DollarSign key={i} size={12} className={i < city.costIndex ? "text-green-400" : "text-gray-700"} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] text-gray-500 uppercase font-black block">Popularity</span>
+                      <span className="text-xl font-black text-[var(--primary)]">{city.popularity}%</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {citySearchResults.map((city, i) => (
+                <div key={i} className="glass-card !p-0 overflow-hidden group/city cursor-pointer" onClick={() => handleQuickAddCity(city)}>
+                   <div className="h-48 relative">
+                    <img src={city.image} className="w-full h-full object-cover group-hover/city:scale-110 transition-transform duration-500" alt={city.name} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div className="absolute bottom-4 left-6">
+                      <p className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest">{city.country}</p>
+                      <h3 className="text-2xl font-bold">{city.name}</h3>
+                    </div>
+                  </div>
+                  <div className="p-6 flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-gray-500 uppercase font-black">Cost Index</span>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <DollarSign key={i} size={12} className={i < city.costIndex ? "text-green-400" : "text-gray-700"} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] text-gray-500 uppercase font-black block">Popularity</span>
+                      <span className="text-xl font-black text-[var(--primary)]">{city.popularity}%</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     )}
