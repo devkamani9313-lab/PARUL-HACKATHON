@@ -115,23 +115,25 @@ export default function LoginPage() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full lg:w-[500px]"
+          className="w-full lg:w-[480px] relative"
         >
-          <div className="glass-card !p-12 lg:!p-16 border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-3xl">
-            {/* CARD GLOW */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/10 blur-[60px] rounded-full"></div>
-            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-500/10 blur-[60px] rounded-full"></div>
+          {/* AMBIENT GLOWS AROUND CARD */}
+          <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/10 via-transparent to-purple-500/10 blur-3xl opacity-50"></div>
+          
+          <div className="relative bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-10 lg:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden">
+            {/* SUBTLE INNER LIGHT */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
             <div className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <Sparkles className="text-cyan-400" size={16} />
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-cyan-400">Security Gateway</span>
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse"></div>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500">Gateway Authorized</span>
               </div>
-              <h2 className="text-4xl font-black tracking-tight text-white mb-4">
-                {isLogin ? "Welcome Back." : "Create Identity."}
+              <h2 className="text-4xl font-black tracking-tight text-white mb-3">
+                {isLogin ? "Welcome Back" : "New Odyssey"}
               </h2>
-              <p className="text-gray-500 font-medium text-base">
-                Synchronize your credentials to enter the network.
+              <p className="text-gray-500 font-medium text-sm leading-relaxed">
+                Enter your credentials to synchronize with the network.
               </p>
             </div>
 
@@ -154,12 +156,13 @@ export default function LoginPage() {
                     exit={{ opacity: 0, height: 0 }}
                     className="space-y-2"
                   >
-                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-700 ml-4">Full Name</label>
-                    <div className="relative">
-                      <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800" size={20} />
+                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Full Name</label>
+                    <div className="relative group">
+                      <UserIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800 group-focus-within:text-cyan-500 transition-colors" size={18} />
                       <input
                         type="text"
-                        className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-5 pl-16 pr-8 text-sm font-bold uppercase tracking-widest outline-none focus:border-cyan-500/40 text-white transition-all"
+                        className="w-full bg-white/[0.02] border border-white/5 rounded-2xl py-4 pl-16 pr-8 text-sm font-medium outline-none focus:border-white/20 focus:bg-white/[0.04] text-white transition-all"
+                        placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
@@ -170,12 +173,13 @@ export default function LoginPage() {
               </AnimatePresence>
               
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-700 ml-4">Email Address</label>
-                <div className="relative">
-                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800" size={20} />
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Email Address</label>
+                <div className="relative group">
+                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800 group-focus-within:text-cyan-500 transition-colors" size={18} />
                   <input
                     type="email"
-                    className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-5 pl-16 pr-8 text-sm font-bold uppercase tracking-widest outline-none focus:border-cyan-500/40 text-white transition-all"
+                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl py-4 pl-16 pr-8 text-sm font-medium outline-none focus:border-white/20 focus:bg-white/[0.04] text-white transition-all"
+                    placeholder="name@nexus.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -185,14 +189,15 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between px-4">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-700">Security Key</label>
-                  {isLogin && <button type="button" className="text-[10px] font-bold text-gray-700 hover:text-white transition-colors">Forgot?</button>}
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-600">Password</label>
+                  {isLogin && <button type="button" className="text-[10px] font-bold text-gray-700 hover:text-white transition-colors">Recover?</button>}
                 </div>
-                <div className="relative">
-                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800" size={20} />
+                <div className="relative group">
+                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-800 group-focus-within:text-cyan-500 transition-colors" size={18} />
                   <input
                     type="password"
-                    className="w-full bg-white/[0.03] border border-white/5 rounded-2xl py-5 pl-16 pr-8 text-sm font-bold outline-none focus:border-cyan-500/40 text-white transition-all"
+                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl py-4 pl-16 pr-8 text-sm font-medium outline-none focus:border-white/20 focus:bg-white/[0.04] text-white transition-all"
+                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -202,31 +207,30 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="w-full h-16 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.6em] hover:bg-cyan-400 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all flex items-center justify-center gap-4 mt-8"
+                className="w-full h-14 bg-white text-black rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-cyan-400 transition-all flex items-center justify-center gap-3 mt-6 shadow-xl shadow-white/5 active:scale-[0.98]"
                 disabled={loading}
               >
-                {loading ? "AUTHORIZING..." : (
+                {loading ? "VERIFYING..." : (
                   <>
-                    AUTHORIZE ENTRY
-                    <ArrowRight size={18} />
+                    LOGIN
+                    <ArrowRight size={16} />
                   </>
                 )}
               </button>
             </form>
 
-            <div className="mt-12 space-y-4 pt-10 border-t border-white/5">
+            <div className="mt-10 pt-10 border-t border-white/5 flex flex-col gap-6">
               <button
                 onClick={() => setIsLogin(!isLogin)}
-                className="w-full py-4 border border-white/5 bg-white/[0.02] rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-white hover:border-white/20 transition-all"
+                className="w-full py-4 text-[11px] font-black uppercase tracking-[0.4em] text-white/80 hover:text-white transition-all bg-white/[0.02] rounded-2xl border border-white/5 hover:border-white/20"
               >
-                {isLogin ? "Initialize New Odyssey" : "Back to Security Gateway"}
+                {isLogin ? "Initialize Account" : "Return to Gateway"}
               </button>
               
-              <Link href="/admin-login" className="block">
-                <div className="flex items-center justify-center gap-3 py-4 px-6 bg-red-500/5 border border-red-500/10 rounded-2xl hover:bg-red-500/10 hover:border-red-500/30 transition-all group">
-                  <ShieldCheck size={16} className="text-red-900 group-hover:text-red-500 transition-colors" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-red-900 group-hover:text-white">Neural Control Center</span>
-                </div>
+              <Link href="/admin-login" className="block text-center group">
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-500 group-hover:text-red-500 transition-all cursor-pointer">
+                  Administrative Override
+                </span>
               </Link>
             </div>
           </div>
