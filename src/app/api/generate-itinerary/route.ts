@@ -7,9 +7,10 @@ const groq = new Groq({
 
 export async function POST(req: Request) {
   try {
-    const { destination, startDate, endDate } = await req.json();
+    const { destination, startDate, endDate, budget } = await req.json();
+    const budgetConstraint = budget && budget > 0 ? `The total cost of ALL activities across all days MUST NOT exceed $${budget}. Distribute this budget realistically.` : "Plan a balanced trip.";
 
-    console.log("Generating itinerary for:", { destination, startDate, endDate });
+    console.log("Generating itinerary for:", { destination, startDate, endDate, budget });
 
     if (!process.env.GROQ_API_KEY) {
       console.error("GROQ_API_KEY is missing in environment variables");
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
 
     const prompt = `
       Create a comprehensive ${durationDays}-day travel itinerary for ${destination}.
+      ${budgetConstraint}
       STRICT REQUIREMENTS:
       1. You MUST provide exactly ${durationDays} items in the "days" array (Day 1 to Day ${durationDays}).
       2. For EVERY day, you MUST provide 3-4 varied activities (e.g., Morning, Afternoon, Evening, and a Meal/Night spot).

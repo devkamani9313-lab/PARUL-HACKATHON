@@ -25,6 +25,7 @@ export interface Trip {
   coverUrl?: string;
   isPublic: boolean;
   createdAt: Date;
+  budget?: number;
 }
 
 export interface Stop {
