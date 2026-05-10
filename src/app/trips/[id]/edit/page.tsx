@@ -698,15 +698,12 @@ export default function ItineraryBuilder() {
     
     {/* Activity Detail Modal */}
     {selectedActivity && (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 bg-black/90 backdrop-blur-xl">
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border-[var(--primary)]/30"
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
+        <div className="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border-2 border-[var(--primary)] shadow-[0_0_50px_rgba(0,201,255,0.3)]"
         >
           <button 
             onClick={() => setSelectedActivity(null)}
-            className="absolute top-6 right-6 z-10 p-2 bg-black/50 rounded-full hover:bg-black/80 transition-all"
+            className="absolute top-4 right-4 z-[10001] p-2 bg-black/80 rounded-full hover:bg-black/100 transition-all border border-white/20"
           >
             <X size={20} />
           </button>
@@ -765,18 +762,15 @@ export default function ItineraryBuilder() {
 
     {/* Add Activity Modal */}
     {showAddActivity && (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 bg-black/90 backdrop-blur-xl">
-        <motion.div 
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="glass max-w-xl w-full max-h-[90vh] overflow-y-auto p-8 border-[var(--primary)]/30"
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
+        <div className="glass max-w-xl w-full max-h-[90vh] overflow-y-auto p-8 relative border-2 border-[var(--primary)] shadow-[0_0_50px_rgba(0,201,255,0.3)]"
         >
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold flex items-center gap-3">
               <Plus className="text-[var(--primary)]" />
               Add New Activity
             </h2>
-            <button onClick={() => setShowAddActivity(false)} className="p-2 hover:bg-white/5 rounded-full">
+            <button onClick={() => setShowAddActivity(false)} className="p-2 hover:bg-white/5 rounded-full border border-white/10">
               <X size={20} />
             </button>
           </div>
@@ -855,17 +849,14 @@ export default function ItineraryBuilder() {
               Confirm Activity
             </button>
           </form>
-        </motion.div>
+        </div>
       </div>
     )}
 
     {/* Trip Journal Modal */}
     {showJournal && (
-      <div className="fixed inset-0 z-[9999] flex justify-end bg-black/80 backdrop-blur-md">
-        <motion.div 
-          initial={{ x: 400 }}
-          animate={{ x: 0 }}
-          className="glass w-full max-w-md h-full flex flex-col shadow-2xl border-l border-white/10"
+      <div className="fixed inset-0 z-[10000] flex justify-end bg-black/80 backdrop-blur-md">
+        <div className="glass w-full max-w-md h-full flex flex-col shadow-2xl border-l-2 border-[var(--primary)]"
         >
           <div className="p-8 border-b border-white/10 flex items-center justify-between">
             <div>
