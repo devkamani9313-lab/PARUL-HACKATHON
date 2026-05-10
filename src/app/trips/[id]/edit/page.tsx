@@ -96,6 +96,17 @@ export default function ItineraryBuilder() {
     if (tripId) fetchNotes();
   }, [tripId]);
 
+  useEffect(() => {
+    if (showJournal || showAddActivity || selectedActivity) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showJournal, showAddActivity, selectedActivity]);
+
   const fetchNotes = async () => {
     try {
       const data = await getTripNotes(tripId);
