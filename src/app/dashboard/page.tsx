@@ -521,16 +521,26 @@ export default function Dashboard() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {[
+                  { title: "Ahmedabad, India", image: "https://images.unsplash.com/photo-1624314138470-5a2f24623f10?auto=format&fit=crop&q=80&w=800", popularity: "92%", cost: 2 },
+                  { title: "Mumbai, India", image: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?auto=format&fit=crop&q=80&w=800", popularity: "96%", cost: 3 },
+                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 5 },
+                  { title: "Cape Town, South Africa", image: "https://images.unsplash.com/photo-1580619305218-8423a7ef79b4?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 4 },
                   { title: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 4 },
                   { title: "Paris, France", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800", popularity: "99%", cost: 5 },
-                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 5 },
-                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 2 },
-                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", popularity: "96%", cost: 3 },
                   { title: "Dubai, UAE", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=800", popularity: "94%", cost: 5 },
+                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 2 },
                   { title: "London, UK", image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 5 },
-                  { title: "Bangkok, Thailand", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579367?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 2 },
                   { title: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 3 },
-                  { title: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800", popularity: "92%", cost: 3 }
+                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", popularity: "96%", cost: 3 },
+                  { title: "Sydney, Australia", image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&q=80&w=800", popularity: "94%", cost: 4 },
+                  { title: "Cairo, Egypt", image: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&q=80&w=800", popularity: "90%", cost: 2 },
+                  { title: "Rio de Janeiro, Brazil", image: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&q=80&w=800", popularity: "93%", cost: 3 },
+                  { title: "Singapore", image: "https://images.unsplash.com/photo-1525596662741-e94ff9f26de1?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 4 },
+                  { title: "Istanbul, Turkey", image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 2 },
+                  { title: "Amsterdam, Netherlands", image: "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&q=80&w=800", popularity: "96%", cost: 4 },
+                  { title: "Venice, Italy", image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=800", popularity: "94%", cost: 4 },
+                  { title: "Santorini, Greece", image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 4 },
+                  { title: "Prague, Czechia", image: "https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&q=80&w=800", popularity: "93%", cost: 2 }
                 ].filter(dest => dest.title.toLowerCase().includes(searchQuery.toLowerCase())).map((dest, i) => (
                   <ExploreCard 
                     key={i}

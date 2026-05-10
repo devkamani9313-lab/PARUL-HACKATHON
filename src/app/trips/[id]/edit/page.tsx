@@ -423,7 +423,7 @@ export default function ItineraryBuilder() {
       </header>
 
       {/* City Search Bar (Floating) */}
-      <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-40">
+      <div className="max-w-4xl mx-auto px-6 mt-8 relative z-40">
         <div className="glass p-2 rounded-[2rem] flex items-center gap-4 border-white/10 shadow-2xl">
           <div className="flex-1 flex items-center gap-3 pl-6">
             <MapPin className="text-[var(--primary)]" size={20} />

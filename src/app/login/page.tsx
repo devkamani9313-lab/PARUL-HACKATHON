@@ -6,7 +6,8 @@ import {
   createUserWithEmailAndPassword,
   updateProfile 
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { 
   Globe, 
@@ -41,7 +42,18 @@ export default function LoginPage() {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(userCredential.user, { displayName: name });
+        const user = userCredential.user;
+        await updateProfile(user, { displayName: name });
+        
+        // SYNC WITH FIRESTORE
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          email: user.email,
+          displayName: name,
+          createdAt: serverTimestamp(),
+          lastSync: serverTimestamp(),
+          status: "SYNCHRONIZED"
+        });
       }
       router.push("/dashboard");
     } catch (err: any) {

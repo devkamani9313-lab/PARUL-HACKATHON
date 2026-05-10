@@ -29,28 +29,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-[var(--primary)] selection:text-black font-sans overflow-x-hidden">
-      {/* Navbar - Ultra Sleek */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] glass px-8 py-3 flex items-center gap-12 border border-white/10 rounded-full backdrop-blur-2xl shadow-2xl">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
-            <Compass size={18} color="#000" />
-          </div>
-          <span className="text-xl font-black tracking-tighter">Traveloop</span>
-        </div>
-        
-        <div className="hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
-          <a href="#features" className="hover:text-[var(--primary)] transition-colors">Intelligence</a>
-          <a href="#showcase" className="hover:text-[var(--primary)] transition-colors">Showcase</a>
-          <a href="#premium" className="hover:text-[var(--primary)] transition-colors">Elite</a>
-        </div>
 
-        <div className="flex items-center gap-6">
-          <Link href="/login" className="text-xs font-bold hover:text-[var(--primary)] transition-colors">Login</Link>
-          <Link href="/login" className="bg-white text-black px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
-            Join Elite
-          </Link>
-        </div>
-      </nav>
 
       {/* Hero Section - The "Trillion Dollar" Impression */}
       <section className="relative h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
@@ -92,18 +71,18 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="max-w-xl mx-auto glass p-2 rounded-full border-white/10 mb-12 flex items-center pr-2"
+            className="max-w-2xl mx-auto glass p-3 rounded-full border-white/10 mb-12 flex items-center group focus-within:border-[var(--primary)]/50 transition-all shadow-2xl"
           >
-            <div className="pl-6 text-gray-500">
-              <MapPin size={20} />
+            <div className="pl-6 text-gray-500 group-focus-within:text-[var(--primary)] transition-colors">
+              <MapPin size={22} />
             </div>
             <input 
               type="text" 
               placeholder="Where is your dream destination?"
-              className="bg-transparent border-none outline-none flex-1 px-4 py-4 text-sm font-bold placeholder:text-gray-600"
+              className="bg-transparent border-none outline-none flex-1 px-4 py-4 text-lg font-bold placeholder:text-gray-600 tracking-tight"
             />
-            <Link href="/login" className="bg-[var(--primary)] text-black px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform">
-              Plan Trip
+            <Link href="/login" className="bg-[var(--primary)] text-black px-10 py-4 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 hover:shadow-[0_0_30px_rgba(0,201,255,0.4)] transition-all">
+              Start Planning
             </Link>
           </motion.div>
 
@@ -117,17 +96,14 @@ export default function LandingPage() {
           </motion.p>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            className="flex flex-col sm:flex-row items-center justify-center gap-8"
           >
-            <Link href="/login" className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-black text-xs font-black uppercase tracking-[0.2em] px-12 py-5 rounded-full shadow-[0_0_50px_rgba(0,201,255,0.3)] hover:scale-105 hover:shadow-[0_0_70px_rgba(0,201,255,0.5)] transition-all flex items-center gap-3 group">
-              Start Your Odyssey <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+            <Link href="/login" className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-4 group text-white/50 hover:text-white transition-all">
+              Watch Showcase <Play size={14} fill="currentColor" className="group-hover:scale-125 transition-transform" />
             </Link>
-            <button className="glass px-12 py-5 text-xs font-black uppercase tracking-[0.2em] hover:bg-white/10 transition-all border-white/10 flex items-center gap-3">
-              <Play size={16} fill="currentColor" /> Watch Showcase
-            </button>
           </motion.div>
         </motion.div>
 
