@@ -109,7 +109,7 @@ export default function ItineraryBuilder() {
     { name: "Rome", country: "Italy", costIndex: 3, popularity: 96, image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=400" },
     { name: "Dubai", country: "UAE", costIndex: 5, popularity: 94, image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" },
     { name: "London", country: "UK", costIndex: 5, popularity: 98, image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=400" },
-    { name: "Bangkok", country: "Thailand", costIndex: 2, popularity: 97, image: "https://images.unsplash.com/photo-1563492065561-36d310aa3d39?auto=format&fit=crop&q=80&w=400" },
+    { name: "Bangkok", country: "Thailand", costIndex: 2, popularity: 97, image: "https://images.unsplash.com/photo-1510379872535-9310dc6fd6a7?auto=format&fit=crop&q=80&w=400" },
     { name: "Barcelona", country: "Spain", costIndex: 3, popularity: 95, image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=400" },
     { name: "Kyoto", country: "Japan", costIndex: 3, popularity: 92, image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=400" }
   ];
