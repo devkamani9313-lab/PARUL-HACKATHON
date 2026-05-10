@@ -80,6 +80,7 @@ export default function LandingPage() {
               type="text" 
               placeholder="Where is your dream destination?"
               className="bg-transparent border-none outline-none flex-1 px-4 py-4 text-lg font-bold placeholder:text-gray-600 tracking-tight"
+              suppressHydrationWarning
             />
             <Link href="/login" className="bg-[var(--primary)] text-black px-10 py-4 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 hover:shadow-[0_0_30px_rgba(0,201,255,0.4)] transition-all">
               Start Planning
@@ -101,7 +102,7 @@ export default function LandingPage() {
             transition={{ delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-8"
           >
-            <Link href="/login" className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-4 group text-white/50 hover:text-white transition-all">
+            <Link href="/login" className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-4 group text-white/50 hover:text-white transition-all" suppressHydrationWarning>
               Watch Showcase <Play size={14} fill="currentColor" className="group-hover:scale-125 transition-transform" />
             </Link>
           </motion.div>

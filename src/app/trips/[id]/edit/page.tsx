@@ -36,11 +36,27 @@ import {
   Book,
   FileText,
   StickyNote,
-  Send
+  Send,
+  Sun,
+  Cloud,
+  CloudRain,
+  Snowflake,
+  CloudLightning,
+  Umbrella,
+  Wind,
+  MousePointer2,
+  Globe,
+  Zap
 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const MapComponent = dynamic(() => import("@/components/MapComponent"), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-black/50 animate-pulse rounded-[2.5rem]"></div>
+});
 
 export default function ItineraryBuilder() {
   const { id: tripId } = useParams() as { id: string };
@@ -48,6 +64,7 @@ export default function ItineraryBuilder() {
   const [trip, setTrip] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showAddStop, setShowAddStop] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   
   // New Stop Form State
   const [newStopCity, setNewStopCity] = useState("");
@@ -406,6 +423,13 @@ export default function ItineraryBuilder() {
             <span>Trip Journal</span>
           </button>
           <button 
+            onClick={() => setShowMap(true)}
+            className="glass px-4 py-2 text-sm flex items-center gap-2 hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] border-[var(--primary)]/20"
+          >
+            <MapPin size={16} />
+            <span>View Map</span>
+          </button>
+          <button 
             onClick={handleDownloadItinerary}
             className="glass px-4 py-2 text-sm flex items-center gap-2 hover:bg-cyan-500/10 hover:text-cyan-400 border-cyan-500/20"
           >
@@ -536,6 +560,9 @@ export default function ItineraryBuilder() {
                           </button>
                         </div>
                       </div>
+
+                      {/* Weather Insight Badge */}
+                      <WeatherBadge city={stop.cityName} date={stop.arrivalDate} />
 
                       <div className="grid grid-cols-1 gap-4">
                         {stop.activities?.map((activity: Activity) => (
@@ -1086,6 +1113,120 @@ export default function ItineraryBuilder() {
         </div>
       </div>
     )}
+    {/* Odyssey Map Modal */}
+    {showMap && (
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl">
+        <div className="w-full max-w-6xl h-[80vh] flex flex-col gap-6 relative">
+          <div className="flex justify-between items-center px-4">
+            <div>
+              <h2 className="text-3xl font-black tracking-tighter flex items-center gap-3">
+                <Globe className="text-[var(--primary)] animate-spin-slow" />
+                INTERACTIVE ODYSSEY MAP
+              </h2>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Visualizing your journey through the matrix</p>
+            </div>
+            <button 
+              onClick={() => setShowMap(false)}
+              className="p-3 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          
+          <div className="flex-1">
+            <MapComponent stops={trip?.stops || []} />
+          </div>
+        </div>
+      </div>
+    )}
+    </div>
+  );
+}
+
+function WeatherBadge({ city, date }: { city: string, date: any }) {
+  const [weather, setWeather] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+        const geoData = await geoRes.json();
+        if (!geoData.results?.length) {
+          setLoading(false);
+          return;
+        }
+        const { latitude, longitude } = geoData.results[0];
+
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+        const weatherData = await weatherRes.json();
+        
+        setWeather({
+          temp: Math.round(weatherData.current_weather.temperature),
+          code: weatherData.current_weather.weathercode,
+          condition: getWeatherCondition(weatherData.current_weather.weathercode)
+        });
+      } catch (err) {
+        console.error("Weather fetch error", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, [city]);
+
+  const getWeatherCondition = (code: number) => {
+    if (code === 0) return "Clear Sky";
+    if (code <= 3) return "Partly Cloudy";
+    if (code <= 48) return "Foggy";
+    if (code <= 57) return "Drizzle";
+    if (code <= 67) return "Rainy";
+    if (code <= 77) return "Snowy";
+    if (code <= 82) return "Rain Showers";
+    if (code <= 86) return "Snow Showers";
+    if (code <= 99) return "Thunderstorm";
+    return "Variable";
+  };
+
+  const getWeatherIcon = (condition: string) => {
+    const props = { size: 16, className: "text-[var(--primary)]" };
+    if (condition.includes("Clear")) return <Sun {...props} />;
+    if (condition.includes("Cloudy")) return <Cloud {...props} />;
+    if (condition.includes("Rain") || condition.includes("Drizzle")) return <CloudRain {...props} />;
+    if (condition.includes("Snow")) return <Snowflake {...props} />;
+    if (condition.includes("Thunder")) return <CloudLightning {...props} />;
+    return <Wind {...props} />;
+  };
+
+  if (loading) return <div className="h-10 w-32 bg-white/5 animate-pulse rounded-xl"></div>;
+  if (!weather) return null;
+
+  const getInsight = (condition: string) => {
+    if (condition.includes("Clear")) return "Perfect for sunset photos & outdoor exploration.";
+    if (condition.includes("Cloudy")) return "Great lighting for city walks and museums.";
+    if (condition.includes("Rain")) return "Expect showers. A good day for indoor galleries.";
+    if (condition.includes("Thunder")) return "Severe weather. Stay safe and enjoy indoor lounges.";
+    return "Ideal day for a balanced travel pace.";
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-3 rounded-2xl w-fit backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          {getWeatherIcon(weather.condition)}
+          <span className="text-sm font-black">{weather.temp}°C</span>
+        </div>
+        <div className="w-[1px] h-4 bg-white/10"></div>
+        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{weather.condition}</span>
+      </div>
+      
+      <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-[var(--primary)]/10 to-transparent border-l-2 border-[var(--primary)] rounded-r-xl">
+        <Zap size={14} className="text-[var(--primary)]" />
+        <p className="text-[10px] font-bold text-gray-300 uppercase tracking-wider italic">
+          Neural Insight: {getInsight(weather.condition)}
+        </p>
+      </div>
     </div>
   );
 }
