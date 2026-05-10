@@ -692,260 +692,263 @@ export default function ItineraryBuilder() {
           </div>
         </div>
 
-        {/* Activity Detail Modal */}
-        {selectedActivity && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
-            <motion.div 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="glass max-w-2xl w-full overflow-hidden relative border-[var(--primary)]/30"
-            >
-              <button 
-                onClick={() => setSelectedActivity(null)}
-                className="absolute top-6 right-6 z-10 p-2 bg-black/50 rounded-full hover:bg-black/80 transition-all"
-              >
-                <X size={20} />
-              </button>
+    </main>
 
-              <div className="h-64 relative">
-                <img 
-                  src={`https://loremflickr.com/800/600/${encodeURIComponent(selectedActivity.name || 'travel')}/all?lock=${selectedActivity.id || 1}`} 
-                  className="w-full h-full object-cover"
-                  alt={selectedActivity.name}
-                  onError={(e: any) => {
-                    e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=1000";
-                  }}
+    {/* Modals moved to root for perfect viewport fixed positioning */}
+    
+    {/* Activity Detail Modal */}
+    {selectedActivity && (
+      <div className="fixed inset-0 z-[120] flex items-start justify-center p-6 bg-black/90 backdrop-blur-xl overflow-y-auto py-12">
+        <motion.div 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="glass max-w-2xl w-full overflow-hidden relative border-[var(--primary)]/30 my-auto"
+        >
+          <button 
+            onClick={() => setSelectedActivity(null)}
+            className="absolute top-6 right-6 z-10 p-2 bg-black/50 rounded-full hover:bg-black/80 transition-all"
+          >
+            <X size={20} />
+          </button>
+
+          <div className="h-64 relative">
+            <img 
+              src={`https://loremflickr.com/800/600/${encodeURIComponent(selectedActivity.name || 'travel')}/all?lock=${selectedActivity.id || 1}`} 
+              className="w-full h-full object-cover"
+              alt={selectedActivity.name}
+              onError={(e: any) => {
+                e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=1000";
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent"></div>
+            <div className="absolute bottom-6 left-8">
+              <span className="px-3 py-1 bg-[var(--primary)] text-black text-xs font-bold uppercase rounded-full mb-3 inline-block">
+                {selectedActivity.category}
+              </span>
+              <h2 className="text-4xl font-bold">{selectedActivity.name}</h2>
+            </div>
+          </div>
+
+          <div className="p-8 space-y-6">
+            <div>
+              <h4 className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest mb-2">About this place</h4>
+              <p className="text-gray-300 leading-relaxed text-lg">
+                {selectedActivity.description || "No description available for this activity yet. AI is still learning about this beautiful spot!"}
+              </p>
+            </div>
+
+            {selectedActivity.famousFor && (
+              <div className="p-4 bg-[var(--primary)]/5 border-l-4 border-[var(--primary)] rounded-r-xl">
+                <h4 className="text-xs font-bold text-[var(--primary)] uppercase mb-1">Why it's iconic</h4>
+                <p className="text-sm text-gray-200">{selectedActivity.famousFor}</p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/5">
+              <div className="text-center">
+                <p className="text-xs text-gray-500 uppercase mb-1">Duration</p>
+                <p className="font-bold">{selectedActivity.duration} mins</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-gray-500 uppercase mb-1">Est. Cost</p>
+                <p className="font-bold text-green-400">${selectedActivity.cost}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-gray-500 uppercase mb-1">Time</p>
+                <p className="font-bold">{selectedActivity.timeStart || "Flexible"}</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    )}
+
+    {/* Add Activity Modal */}
+    {showAddActivity && (
+      <div className="fixed inset-0 z-[120] flex items-start justify-center p-6 bg-black/90 backdrop-blur-xl overflow-y-auto py-12">
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="glass max-w-xl w-full p-8 border-[var(--primary)]/30 my-auto"
+        >
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold flex items-center gap-3">
+              <Plus className="text-[var(--primary)]" />
+              Add New Activity
+            </h2>
+            <button onClick={() => setShowAddActivity(false)} className="p-2 hover:bg-white/5 rounded-full">
+              <X size={20} />
+            </button>
+          </div>
+
+          <form onSubmit={handleAddActivity} className="space-y-6">
+            <div>
+              <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Activity Name</label>
+              <input 
+                type="text" 
+                placeholder="e.g. Visit Eiffel Tower" 
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                value={newActivity.name}
+                onChange={(e) => setNewActivity({...newActivity, name: e.target.value})}
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Start Time</label>
+                <input 
+                  type="time" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                  value={newActivity.timeStart}
+                  onChange={(e) => setNewActivity({...newActivity, timeStart: e.target.value})}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-8">
-                  <span className="px-3 py-1 bg-[var(--primary)] text-black text-xs font-bold uppercase rounded-full mb-3 inline-block">
-                    {selectedActivity.category}
-                  </span>
-                  <h2 className="text-4xl font-bold">{selectedActivity.name}</h2>
-                </div>
               </div>
-
-              <div className="p-8 space-y-6">
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest mb-2">About this place</h4>
-                  <p className="text-gray-300 leading-relaxed text-lg">
-                    {selectedActivity.description || "No description available for this activity yet. AI is still learning about this beautiful spot!"}
-                  </p>
-                </div>
-
-                {selectedActivity.famousFor && (
-                  <div className="p-4 bg-[var(--primary)]/5 border-l-4 border-[var(--primary)] rounded-r-xl">
-                    <h4 className="text-xs font-bold text-[var(--primary)] uppercase mb-1">Why it's iconic</h4>
-                    <p className="text-sm text-gray-200">{selectedActivity.famousFor}</p>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/5">
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase mb-1">Duration</p>
-                    <p className="font-bold">{selectedActivity.duration} mins</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase mb-1">Est. Cost</p>
-                    <p className="font-bold text-green-400">${selectedActivity.cost}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase mb-1">Time</p>
-                    <p className="font-bold">{selectedActivity.timeStart || "Flexible"}</p>
-                  </div>
-                </div>
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Category</label>
+                <select 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                  value={newActivity.category}
+                  onChange={(e) => setNewActivity({...newActivity, category: e.target.value})}
+                >
+                  <option className="bg-black" value="Sightseeing">Sightseeing</option>
+                  <option className="bg-black" value="Food">Food & Drink</option>
+                  <option className="bg-black" value="Shopping">Shopping</option>
+                  <option className="bg-black" value="Adventure">Adventure</option>
+                  <option className="bg-black" value="Relaxation">Relaxation</option>
+                </select>
               </div>
-            </motion.div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Duration (mins)</label>
+                <input 
+                  type="number" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                  value={newActivity.duration}
+                  onChange={(e) => setNewActivity({...newActivity, duration: parseInt(e.target.value)})}
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Est. Cost ($)</label>
+                <input 
+                  type="number" 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
+                  value={newActivity.cost}
+                  onChange={(e) => setNewActivity({...newActivity, cost: parseInt(e.target.value)})}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Brief Description</label>
+              <textarea 
+                placeholder="Describe what you'll do..." 
+                className="w-full h-24 bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)] resize-none"
+                value={newActivity.description}
+                onChange={(e) => setNewActivity({...newActivity, description: e.target.value})}
+              ></textarea>
+            </div>
+
+            <button type="submit" className="btn-primary w-full justify-center py-4 text-lg">
+              Confirm Activity
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    )}
+
+    {/* Trip Journal Modal */}
+    {showJournal && (
+      <div className="fixed inset-0 z-[120] flex justify-end bg-black/80 backdrop-blur-md">
+        <motion.div 
+          initial={{ x: 400 }}
+          animate={{ x: 0 }}
+          className="glass w-full max-w-md h-screen flex flex-col shadow-2xl border-l border-white/10"
+        >
+          <div className="p-8 border-b border-white/10 flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold flex items-center gap-3">
+                <Book className="text-[var(--primary)]" />
+                Trip Journal
+              </h2>
+              <p className="text-xs text-gray-400 mt-1">Jot down memories and reminders</p>
+            </div>
+            <button onClick={() => setShowJournal(false)} className="p-2 hover:bg-white/5 rounded-full">
+              <X size={20} />
+            </button>
           </div>
-        )}
 
-        {/* Add Activity Modal */}
-        {showAddActivity && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="glass max-w-xl w-full p-8 border-[var(--primary)]/30"
-            >
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold flex items-center gap-3">
-                  <Plus className="text-[var(--primary)]" />
-                  Add New Activity
-                </h2>
-                <button onClick={() => setShowAddActivity(false)} className="p-2 hover:bg-white/5 rounded-full">
-                  <X size={20} />
+          <div className="flex-1 overflow-y-auto p-8 space-y-6">
+            <form onSubmit={handleAddNote} className="space-y-4">
+              <div>
+                <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block">Category</label>
+                <select 
+                  value={noteCategory}
+                  onChange={(e) => setNoteCategory(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm outline-none focus:border-[var(--primary)]"
+                >
+                  <option className="bg-black" value="General">General Note</option>
+                  <option className="bg-black" value="Reminder">Reminder</option>
+                  <option className="bg-black" value="Hotel">Hotel Info</option>
+                  <option className="bg-black" value="Contact">Local Contact</option>
+                  {trip?.stops?.map((_: any, i: number) => (
+                    <option key={i} className="bg-black" value={`Day ${i + 1}`}>Day {i + 1}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="relative">
+                <textarea 
+                  placeholder="Write your note here..."
+                  value={newNoteContent}
+                  onChange={(e) => setNewNoteContent(e.target.value)}
+                  className="w-full h-32 bg-white/5 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-[var(--primary)] resize-none"
+                ></textarea>
+                <button 
+                  type="submit"
+                  className="absolute bottom-4 right-4 p-2 bg-[var(--primary)] text-black rounded-lg hover:scale-110 transition-transform shadow-lg"
+                >
+                  <Send size={18} />
                 </button>
               </div>
+            </form>
 
-              <form onSubmit={handleAddActivity} className="space-y-6">
-                <div>
-                  <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Activity Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Visit Eiffel Tower" 
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
-                    value={newActivity.name}
-                    onChange={(e) => setNewActivity({...newActivity, name: e.target.value})}
-                    required
-                  />
+            <div className="space-y-4">
+              <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-widest border-b border-white/5 pb-2">Recent Notes</h3>
+              {notes.length === 0 ? (
+                <div className="text-center py-12">
+                  <FileText className="mx-auto text-gray-700 mb-3" size={40} />
+                  <p className="text-sm text-gray-500">Your journal is empty.</p>
                 </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Start Time</label>
-                    <input 
-                      type="time" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
-                      value={newActivity.timeStart}
-                      onChange={(e) => setNewActivity({...newActivity, timeStart: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Category</label>
-                    <select 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
-                      value={newActivity.category}
-                      onChange={(e) => setNewActivity({...newActivity, category: e.target.value})}
-                    >
-                      <option className="bg-black" value="Sightseeing">Sightseeing</option>
-                      <option className="bg-black" value="Food">Food & Drink</option>
-                      <option className="bg-black" value="Shopping">Shopping</option>
-                      <option className="bg-black" value="Adventure">Adventure</option>
-                      <option className="bg-black" value="Relaxation">Relaxation</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Duration (mins)</label>
-                    <input 
-                      type="number" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
-                      value={newActivity.duration}
-                      onChange={(e) => setNewActivity({...newActivity, duration: parseInt(e.target.value)})}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Est. Cost ($)</label>
-                    <input 
-                      type="number" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)]"
-                      value={newActivity.cost}
-                      onChange={(e) => setNewActivity({...newActivity, cost: parseInt(e.target.value)})}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block tracking-widest">Brief Description</label>
-                  <textarea 
-                    placeholder="Describe what you'll do..." 
-                    className="w-full h-24 bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-[var(--primary)] resize-none"
-                    value={newActivity.description}
-                    onChange={(e) => setNewActivity({...newActivity, description: e.target.value})}
-                  ></textarea>
-                </div>
-
-                <button type="submit" className="btn-primary w-full justify-center py-4 text-lg">
-                  Confirm Activity
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-
-        {/* Trip Journal Modal */}
-        {showJournal && (
-          <div className="fixed inset-0 z-[110] flex justify-end bg-black/80 backdrop-blur-md">
-            <motion.div 
-              initial={{ x: 400 }}
-              animate={{ x: 0 }}
-              className="glass w-full max-w-md h-screen flex flex-col shadow-2xl border-l border-white/10"
-            >
-              <div className="p-8 border-b border-white/10 flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold flex items-center gap-3">
-                    <Book className="text-[var(--primary)]" />
-                    Trip Journal
-                  </h2>
-                  <p className="text-xs text-gray-400 mt-1">Jot down memories and reminders</p>
-                </div>
-                <button onClick={() => setShowJournal(false)} className="p-2 hover:bg-white/5 rounded-full">
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-8 space-y-6">
-                <form onSubmit={handleAddNote} className="space-y-4">
-                  <div>
-                    <label className="text-[10px] font-black uppercase text-gray-500 mb-2 block">Category</label>
-                    <select 
-                      value={noteCategory}
-                      onChange={(e) => setNoteCategory(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm outline-none focus:border-[var(--primary)]"
-                    >
-                      <option className="bg-black" value="General">General Note</option>
-                      <option className="bg-black" value="Reminder">Reminder</option>
-                      <option className="bg-black" value="Hotel">Hotel Info</option>
-                      <option className="bg-black" value="Contact">Local Contact</option>
-                      {trip?.stops?.map((_: any, i: number) => (
-                        <option key={i} className="bg-black" value={`Day ${i + 1}`}>Day {i + 1}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="relative">
-                    <textarea 
-                      placeholder="Write your note here..."
-                      value={newNoteContent}
-                      onChange={(e) => setNewNoteContent(e.target.value)}
-                      className="w-full h-32 bg-white/5 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-[var(--primary)] resize-none"
-                    ></textarea>
-                    <button 
-                      type="submit"
-                      className="absolute bottom-4 right-4 p-2 bg-[var(--primary)] text-black rounded-lg hover:scale-110 transition-transform shadow-lg"
-                    >
-                      <Send size={18} />
-                    </button>
-                  </div>
-                </form>
-
-                <div className="space-y-4">
-                  <h3 className="text-[10px] font-black uppercase text-gray-500 tracking-widest border-b border-white/5 pb-2">Recent Notes</h3>
-                  {notes.length === 0 ? (
-                    <div className="text-center py-12">
-                      <FileText className="mx-auto text-gray-700 mb-3" size={40} />
-                      <p className="text-sm text-gray-500">Your journal is empty.</p>
+              ) : (
+                notes.map((note) => (
+                  <div key={note.id} className="glass-card !p-4 group/note">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                        note.category.includes('Day') ? 'bg-[var(--primary)]/20 text-[var(--primary)]' : 'bg-white/10 text-gray-400'
+                      }`}>
+                        {note.category}
+                      </span>
+                      <button 
+                        onClick={() => handleDeleteNote(note.id!)}
+                        className="text-gray-600 hover:text-red-500 opacity-0 group-hover/note:opacity-100 transition-all"
+                      >
+                        <Trash2 size={14} />
+                      </button>
                     </div>
-                  ) : (
-                    notes.map((note) => (
-                      <div key={note.id} className="glass-card !p-4 group/note">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                            note.category.includes('Day') ? 'bg-[var(--primary)]/20 text-[var(--primary)]' : 'bg-white/10 text-gray-400'
-                          }`}>
-                            {note.category}
-                          </span>
-                          <button 
-                            onClick={() => handleDeleteNote(note.id!)}
-                            className="text-gray-600 hover:text-red-500 opacity-0 group-hover/note:opacity-100 transition-all"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                        <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{note.content}</p>
-                        <p className="text-[9px] text-gray-600 mt-3 font-mono">
-                          {new Date(note.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </motion.div>
+                    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{note.content}</p>
+                    <p className="text-[9px] text-gray-600 mt-3 font-mono">
+                      {new Date(note.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        )}
-      </main>
+        </motion.div>
+      </div>
+    )}
     </div>
   );
 }
