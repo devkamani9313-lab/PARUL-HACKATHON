@@ -336,8 +336,13 @@ export default function Dashboard() {
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-[var(--primary)] transition-colors" size={20} />
                     <input 
                       type="text" 
-                      placeholder="Search journeys..."
+                      placeholder="Search journeys or cities..."
                       className="w-full bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-[var(--primary)] transition-all font-medium text-white shadow-2xl"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        if (e.target.value.length > 2) setActiveTab("explore");
+                      }}
                     />
                   </div>
                   <button onClick={() => setShowCreateModal(true)} className="btn-primary py-4 px-8 shadow-[0_0_50px_rgba(0,201,255,0.2)] flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all">
@@ -516,31 +521,52 @@ export default function Dashboard() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 {[
-                  { title: "Varanasi, India", image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&q=80&w=800", trips: "25k" },
-                  { title: "Jaipur, India", image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=800", trips: "18k" },
-                  { title: "Ladakh, India", image: "https://images.unsplash.com/photo-1544085311-11a028465b03?auto=format&fit=crop&q=80&w=800", trips: "10k" },
-                  { title: "Goa, India", image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=800", trips: "30k" },
-                  { title: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800", trips: "12k" },
-                  { title: "Santorini, Greece", image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80&w=800", trips: "8k" },
-                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", trips: "15k" },
-                  { title: "Swiss Alps", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800", trips: "5k" },
-                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", trips: "22k" },
-                  { title: "Paris, France", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800", trips: "40k" },
-                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", trips: "28k" },
-                  { title: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=800", trips: "35k" }
+                  { title: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1540959733332-e94e270b4d82?auto=format&fit=crop&q=80&w=800", trips: "98%", cost: 4 },
+                  { title: "Paris, France", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800", trips: "99%", cost: 5 },
+                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", trips: "97%", cost: 5 },
+                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", trips: "95%", cost: 2 },
+                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", trips: "96%", cost: 3 },
+                  { title: "Dubai, UAE", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=800", trips: "94%", cost: 5 },
+                  { title: "London, UK", image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800", trips: "98%", cost: 5 },
+                  { title: "Bangkok, Thailand", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579367?auto=format&fit=crop&q=80&w=800", trips: "97%", cost: 2 },
+                  { title: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=800", trips: "95%", cost: 3 },
+                  { title: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800", trips: "92%", cost: 3 }
                 ].filter(dest => dest.title.toLowerCase().includes(searchQuery.toLowerCase())).map((dest, i) => (
-                  <ExploreCard 
-                    key={i}
-                    title={dest.title} 
-                    image={dest.image} 
-                    trips={dest.trips}
-                    onPlan={() => {
-                      setNewTripName(`Adventure in ${dest.title}`);
-                      setShowCreateModal(true);
-                    }}
-                  />
+                  <div key={i} className="glass-card !p-0 overflow-hidden group/city cursor-pointer h-[400px]" onClick={() => {
+                    setNewTripName(`Journey to ${dest.title}`);
+                    setShowCreateModal(true);
+                  }}>
+                    <div className="h-48 relative">
+                      <img src={dest.image} className="w-full h-full object-cover group-hover/city:scale-110 transition-transform duration-500" alt={dest.title} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                      <div className="absolute bottom-4 left-6">
+                        <h3 className="text-2xl font-bold">{dest.title}</h3>
+                      </div>
+                    </div>
+                    <div className="p-6 space-y-6">
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Cost Index</span>
+                          <div className="flex gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <DollarSign key={i} size={12} className={i < dest.cost ? "text-green-400" : "text-gray-700"} />
+                            ))}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[10px] text-gray-500 uppercase font-black block tracking-widest">Popularity</span>
+                          <span className="text-xl font-black text-[var(--primary)]">{dest.trips}</span>
+                        </div>
+                      </div>
+                      <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-[0.2em] hover:bg-[var(--primary)] hover:text-black transition-all">
+                        Launch Journey
+                      </button>
+                    </div>
+                  </div>
                 ))}
+              </div>
               </div>
             </div>
           </section>
