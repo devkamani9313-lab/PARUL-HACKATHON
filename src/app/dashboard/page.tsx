@@ -522,48 +522,28 @@ export default function Dashboard() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {[
-                  { title: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1540959733332-e94e270b4d82?auto=format&fit=crop&q=80&w=800", trips: "98%", cost: 4 },
-                  { title: "Paris, France", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800", trips: "99%", cost: 5 },
-                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", trips: "97%", cost: 5 },
-                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", trips: "95%", cost: 2 },
-                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", trips: "96%", cost: 3 },
-                  { title: "Dubai, UAE", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=800", trips: "94%", cost: 5 },
-                  { title: "London, UK", image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800", trips: "98%", cost: 5 },
-                  { title: "Bangkok, Thailand", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579367?auto=format&fit=crop&q=80&w=800", trips: "97%", cost: 2 },
-                  { title: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=800", trips: "95%", cost: 3 },
-                  { title: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800", trips: "92%", cost: 3 }
+                  { title: "Tokyo, Japan", image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 4 },
+                  { title: "Paris, France", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800", popularity: "99%", cost: 5 },
+                  { title: "New York, USA", image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 5 },
+                  { title: "Bali, Indonesia", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 2 },
+                  { title: "Rome, Italy", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800", popularity: "96%", cost: 3 },
+                  { title: "Dubai, UAE", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=800", popularity: "94%", cost: 5 },
+                  { title: "London, UK", image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800", popularity: "98%", cost: 5 },
+                  { title: "Bangkok, Thailand", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579367?auto=format&fit=crop&q=80&w=800", popularity: "97%", cost: 2 },
+                  { title: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&q=80&w=800", popularity: "95%", cost: 3 },
+                  { title: "Kyoto, Japan", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800", popularity: "92%", cost: 3 }
                 ].filter(dest => dest.title.toLowerCase().includes(searchQuery.toLowerCase())).map((dest, i) => (
-                  <div key={i} className="glass-card !p-0 overflow-hidden group/city cursor-pointer h-[400px]" onClick={() => {
-                    setNewTripName(`Journey to ${dest.title}`);
-                    setShowCreateModal(true);
-                  }}>
-                    <div className="h-48 relative">
-                      <img src={dest.image} className="w-full h-full object-cover group-hover/city:scale-110 transition-transform duration-500" alt={dest.title} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                      <div className="absolute bottom-4 left-6">
-                        <h3 className="text-2xl font-bold">{dest.title}</h3>
-                      </div>
-                    </div>
-                    <div className="p-6 space-y-6">
-                      <div className="flex justify-between items-center">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Cost Index</span>
-                          <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                              <DollarSign key={i} size={12} className={i < dest.cost ? "text-green-400" : "text-gray-700"} />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-[10px] text-gray-500 uppercase font-black block tracking-widest">Popularity</span>
-                          <span className="text-xl font-black text-[var(--primary)]">{dest.trips}</span>
-                        </div>
-                      </div>
-                      <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-[0.2em] hover:bg-[var(--primary)] hover:text-black transition-all">
-                        Launch Journey
-                      </button>
-                    </div>
-                  </div>
+                  <ExploreCard 
+                    key={i}
+                    title={dest.title} 
+                    image={dest.image} 
+                    popularity={dest.popularity}
+                    cost={dest.cost}
+                    onPlan={() => {
+                      setNewTripName(`Adventure in ${dest.title}`);
+                      setShowCreateModal(true);
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -946,9 +926,9 @@ function TripCard({ trip, onDelete }: { trip: any, onDelete: () => void }) {
   );
 }
 
-function ExploreCard({ title, image, trips, onPlan }: { title: string, image: string, trips: string, onPlan: () => void }) {
+function ExploreCard({ title, image, popularity, cost, onPlan }: { title: string, image: string, popularity: string, cost: number, onPlan: () => void }) {
   return (
-    <div className="glass-card overflow-hidden group cursor-pointer border-none shadow-xl relative h-[400px]">
+    <div className="glass-card overflow-hidden group cursor-pointer border-none shadow-xl relative h-[450px]" onClick={onPlan}>
       <img 
         src={image} 
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
@@ -957,17 +937,32 @@ function ExploreCard({ title, image, trips, onPlan }: { title: string, image: st
           e.target.src = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=800";
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-8">
-        <h4 className="text-2xl font-bold mb-1">{title}</h4>
-        <p className="text-sm text-gray-400 mb-6">{trips} explorers planned here</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-8">
+        <h4 className="text-3xl font-black mb-1 tracking-tighter">{title}</h4>
+        
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Cost</span>
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <DollarSign key={i} size={10} className={i < cost ? "text-green-400" : "text-white/20"} />
+              ))}
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-[10px] text-gray-400 uppercase font-black block tracking-widest">Popularity</span>
+            <span className="text-sm font-black text-[var(--primary)]">{popularity}</span>
+          </div>
+        </div>
+
         <button 
           onClick={(e) => {
             e.stopPropagation();
             onPlan();
           }}
-          className="w-full py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl font-bold hover:bg-[var(--primary)] hover:text-black transition-all"
+          className="w-full py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-[var(--primary)] hover:text-black transition-all"
         >
-          Plan This Trip
+          Plan This Journey
         </button>
       </div>
     </div>
