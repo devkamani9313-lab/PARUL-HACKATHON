@@ -13,9 +13,11 @@ import {
   MoreVertical,
   Search,
   Filter,
-  ShieldCheck
+  ShieldCheck,
+  ChevronLeft
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const { user, loading } = useAuth();
@@ -39,9 +41,9 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="w-64 border-r border-white/5 bg-[#0A0A0A] flex flex-col p-6 sticky top-0 h-screen">
         <div className="flex items-center gap-3 mb-10 px-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center shadow-lg">
-            <ShieldCheck size={24} color="#000" />
-          </div>
+          <Link href="/dashboard" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+            <ChevronLeft size={20} />
+          </Link>
           <span className="text-xl font-bold">Admin Panel</span>
         </div>
 
