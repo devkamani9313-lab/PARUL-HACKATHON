@@ -756,7 +756,7 @@ export default function ItineraryBuilder() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     )}
 
@@ -937,7 +937,7 @@ export default function ItineraryBuilder() {
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     )}
     </div>
