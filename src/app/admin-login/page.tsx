@@ -30,10 +30,13 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      // In a real hackathon, you'd check if the user is in an 'admins' collection
-      // For simplicity, we just check credentials
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/admin");
+      // Hardened Admin Logic: Explicitly lock to owner credentials
+      if (email === "devkamani9313@gmail.com" && password === "Dev123") {
+        await signInWithEmailAndPassword(auth, email, password);
+        router.push("/admin");
+      } else {
+        setError("Unauthorized: Admin Credentials Required.");
+      }
     } catch (err: any) {
       setError("Admin authentication failed. Access denied.");
     } finally {
