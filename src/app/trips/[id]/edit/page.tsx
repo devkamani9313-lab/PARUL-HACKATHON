@@ -683,7 +683,7 @@ export default function ItineraryBuilder() {
 
         {/* Activity Detail Modal */}
         {selectedActivity && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
             <motion.div 
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -750,7 +750,7 @@ export default function ItineraryBuilder() {
 
         {/* Add Activity Modal */}
         {showAddActivity && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -846,7 +846,7 @@ export default function ItineraryBuilder() {
 
         {/* Trip Journal Modal */}
         {showJournal && (
-          <div className="fixed inset-0 z-[100] flex justify-end bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="fixed inset-0 z-[110] flex justify-end bg-black/80 backdrop-blur-md">
             <motion.div 
               initial={{ x: 400 }}
               animate={{ x: 0 }}
