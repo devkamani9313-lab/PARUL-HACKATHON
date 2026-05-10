@@ -49,11 +49,21 @@ export default function AdminDashboard() {
         </div>
 
         <nav className="flex-1 space-y-2">
-          <AdminNavItem icon={<LayoutDashboard size={20} />} label="Overview" active />
-          <AdminNavItem icon={<Map size={20} />} label="All Trips" />
-          <AdminNavItem icon={<Users size={20} />} label="User Base" />
-          <AdminNavItem icon={<Globe size={20} />} label="Popular Cities" />
-          <AdminNavItem icon={<BarChart3 size={20} />} label="Revenue" />
+          <button className="w-full text-left" onClick={() => {}}>
+            <AdminNavItem icon={<LayoutDashboard size={20} />} label="Overview" active />
+          </button>
+          <button className="w-full text-left" onClick={() => {}}>
+            <AdminNavItem icon={<Map size={20} />} label="All Trips" />
+          </button>
+          <button className="w-full text-left" onClick={() => {}}>
+            <AdminNavItem icon={<Users size={20} />} label="User Base" />
+          </button>
+          <button className="w-full text-left" onClick={() => {}}>
+            <AdminNavItem icon={<Globe size={20} />} label="Popular Cities" />
+          </button>
+          <button className="w-full text-left" onClick={() => {}}>
+            <AdminNavItem icon={<BarChart3 size={20} />} label="Revenue" />
+          </button>
         </nav>
 
         <div className="mt-auto pt-6 border-t border-white/5 space-y-2">
@@ -218,10 +228,10 @@ function DeviceStat({ label, percent, color }: { label: string, percent: number,
 
 function AdminNavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
   return (
-    <button className={`flex items-center gap-4 p-4 rounded-xl transition-all w-full group ${active ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-gray-500 hover:bg-white/[0.02] hover:text-white'}`}>
+    <div className={`flex items-center gap-4 p-4 rounded-xl transition-all w-full group ${active ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-gray-500 hover:bg-white/[0.02] hover:text-white'}`}>
       <span className={`${active ? 'text-red-500' : 'text-gray-600 group-hover:text-white'} transition-colors`}>{icon}</span>
       <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
-    </button>
+    </div>
   );
 }
 
