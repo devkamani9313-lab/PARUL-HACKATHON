@@ -190,24 +190,22 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-14 flex flex-col gap-6 items-center pt-10 border-t border-white/5">
-              <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-700 hover:text-white transition-all"
-              >
-                {isLogin ? (
-                  <>NEW EXPLORER? <span className="text-cyan-400 underline underline-offset-8">JOIN THE ODYSSEY</span></>
-                ) : (
-                  <>BACK TO LOGIN</>
-                )}
-              </button>
-              
-              <Link href="/admin-login" className="group">
-                <div className="flex items-center gap-3 py-3 px-6 bg-white/[0.02] border border-white/5 rounded-xl hover:border-red-500/30 transition-all">
-                  <ShieldCheck size={14} className="text-gray-800 group-hover:text-red-500 transition-colors" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-800 group-hover:text-white">Administrative Portal</span>
-                </div>
-              </Link>
+            <div className="mt-14 space-y-6 pt-10 border-t border-white/5">
+              <div className="flex flex-col gap-4">
+                <button
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="w-full py-4 border border-cyan-500/20 bg-cyan-500/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all"
+                >
+                  {isLogin ? "NEW EXPLORER? JOIN THE ODYSSEY" : "BACK TO USER LOGIN"}
+                </button>
+                
+                <Link href="/admin-login" className="block">
+                  <div className="flex items-center justify-center gap-3 py-4 px-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:border-red-500/30 hover:bg-red-500/5 transition-all group">
+                    <ShieldCheck size={16} className="text-gray-800 group-hover:text-red-500 transition-colors" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-800 group-hover:text-white">System Admin Portal</span>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </motion.div>
